@@ -1,0 +1,285 @@
+//Task 3: Advanced STL Operations 
+
+//Goal: Perform advanced operations such as transformations and conditional modifications on HMI states. 
+
+//Scenario: 
+
+//The system needs to process HMI states based on certain conditions (e.g., hide all sliders during night mode). 
+
+//Steps: 
+
+//Manipulate Control States: 
+
+//Use std::copy to create a backup of the control list. 
+
+//Use std::fill to set all states to "disabled" temporarily. 
+
+//Use std::generate to generate random states ("visible", "invisible", "disabled") for testing. 
+
+//Apply Transformations: 
+
+//Use std::transform to change the state of all sliders to "invisible". 
+
+//Use std::replace to replace "disabled" with "enabled" for testing. 
+
+//Use std::remove_if to filter out invisible controls from the list. 
+
+//Other Operations: 
+
+//Use std::reverse to reverse the control order (e.g., for a debug layout). 
+
+//Use std::partition to group visible controls together. 
+
+//Output Results: 
+
+//Show intermediate results after each operation. 
+
+
+
+#include<bits/stdc++.h> 
+
+using namespace std; 
+
+  
+
+int main() 
+
+{ 
+
+vector<string> HMIStates; 
+
+int n; 
+
+string states; 
+
+  
+
+cout<<"Enter size of HMIStates Container: "; 
+
+cin>>n; 
+
+  
+
+cout<<"Enter the data to push into HMIStates Container: "; 
+
+for(int i = 0; i < n; i++) 
+
+{ 
+
+cout<<"HMIStates["<<i<<"] is: "; 
+
+cin>>states; 
+
+HMIStates.push_back(states); 
+
+} 
+
+  
+
+cout<<"The HMIStates Data: "<<endl; 
+
+  
+
+for(auto ele : HMIStates) 
+
+{ 
+
+cout<<ele<<endl; 
+
+} 
+
+  
+
+cout<<"...........................Copying the data from HMIStates......................."<<endl; 
+
+  
+
+vector<string>BackUpList(HMIStates.size()); 
+
+copy(HMIStates.begin(), HMIStates.end(),BackUpList.begin()); 
+
+  
+
+cout<<"The BackUpList Data: "<<endl; 
+
+  
+
+for(auto ele : BackUpList) 
+
+{ 
+
+cout<<ele<<endl; 
+
+} 
+
+  
+
+cout<<"...........................To set all states disabled temporarily................."<<endl; 
+
+  
+
+fill(HMIStates.begin(), HMIStates.end(),"disabled"); 
+
+  
+
+cout<<"After disabling the HMIStates: "<<endl; 
+
+ 
+
+    for(auto ele : HMIStates) 
+
+    { 
+
+        cout<<ele<<endl; 
+
+    } 
+
+     
+
+    cout<<".............................Generating random states.............................."<<endl; 
+
+    vector<string> possibleStatesToGenerate = {"visible","invisible","disabled","enable","slider"}; 
+
+    random_device rd; 
+
+    mt19937 gen(rd()); 
+
+    uniform_int_distribution<> state1(0,possibleStatesToGenerate.size()-1); 
+
+     
+
+    generate(HMIStates.begin(),HMIStates.end(),[&]() 
+
+    {return possibleStatesToGenerate[state1(gen)];}); 
+
+     
+
+    cout<<"Printing random states after generating in randomly.."<<endl; 
+
+     
+
+    for(auto ele : HMIStates) 
+
+    { 
+
+        cout<<ele<<endl; 
+
+    } 
+
+     
+
+    cout<<"........................Transforming all slider into invisible......................."<<endl; 
+
+     
+
+    transform(HMIStates.begin(), HMIStates.end(),HMIStates.begin(),[](string state) 
+
+    {return (state == "slider" ? "invisible" : state);}); 
+
+     
+
+    cout<<"HMI States after transforming from slider to invisible.."<<endl; 
+
+    for(auto it : HMIStates) 
+
+    { 
+
+        cout<<it<<endl; 
+
+    } 
+
+     
+
+    cout<<"......................Replacing from disable to to enable..........................."<<endl; 
+
+     
+
+    replace(HMIStates.begin(),HMIStates.end(),string("disabled"), string("enable")); 
+
+     
+
+    cout<<"After replacing from disabled to enable.."<<endl; 
+
+     
+
+    for(auto it : HMIStates) 
+
+    { 
+
+        cout<<it<<endl; 
+
+    } 
+
+     
+
+    cout<<"...................Removing the invisible controls using remove_if....................."<<endl; 
+
+     
+
+    HMIStates.erase(remove_if(HMIStates.begin(), HMIStates.end(), [](string state) 
+
+    {return state == "invisible";}), HMIStates.end()); 
+
+     
+
+    cout<<"after removing invisible controls"<<endl; 
+
+     
+
+    for(auto it : HMIStates) 
+
+    { 
+
+        cout<<it<<endl; 
+
+    } 
+
+     
+
+    cout<<"...............................Reversing the control states.................................."<<endl; 
+
+     
+
+    reverse(HMIStates.begin(),HMIStates.end()); 
+
+    cout<<"After reversing the HMIStates.."<<endl; 
+
+     
+
+    for(auto it : HMIStates) 
+
+    { 
+
+        cout<<it<<endl; 
+
+    } 
+
+     
+
+    cout<<"..........................Partitioning the visible controls together.........................."<<endl; 
+
+     
+
+    partition(HMIStates.begin(),HMIStates.end(),[](const string& state) 
+
+    {return state == "visible";}); 
+
+     
+
+    cout<<"After Partitioning the visible controls together.."<<endl; 
+
+     
+
+    for(auto it : HMIStates) 
+
+    { 
+
+        cout<<it<<endl; 
+
+    } 
+
+return 0; 
+
+} 
+
+ 

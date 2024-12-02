@@ -1,0 +1,167 @@
+//Task 2: Iterating Through Containers and Finding Elements 
+
+//Goal: Practice iterating through containers and retrieving specific elements. 
+
+//Scenario: 
+
+//You are tasked with highlighting all active widgets on the HMI screen. The HMI has two main containers: 
+
+//std::set for static widgets. 
+
+//Steps: 
+
+//Initialize a std::vector<std::string> with dynamic widgets ("Speedometer", "Tachometer", etc.). 
+
+//Initialize a std::set<std::string> with static widgets ("Logo", "WarningLights"). 
+
+//Use Iterators: 
+
+//Print all dynamic widgets using an iterator. 
+
+//Check if a specific widget (e.g., "WarningLights") is in the std::set using std::set::find. 
+
+//Advanced Iteration: 
+
+//Combine both containers into a std::vector<std::string> using std::copy. 
+
+//Use std::find to locate a specific widget in the combined container. 
+
+//Output Results: 
+
+//Print the widget list dynamically and show results of widget searches. 
+
+ 
+
+Code: 
+
+#include<bits/stdc++.h> 
+
+using namespace std;  
+
+int main() 
+
+{ 
+
+    vector<string> dynamicWidgets; 
+
+    int n; 
+
+    string ele; 
+
+     
+
+    cout<<"Enter size of dynamic widgets: "; 
+
+    cin>>n; 
+
+     
+
+    cout<<"Push the values into dynamic widgets..."<<endl; 
+
+    for(int i = 0; i < n; i++) 
+
+    { 
+
+        cout<<"dynamicWidgets["<<i<<"] is: "; 
+
+        cin>>ele; 
+
+        dynamicWidgets.push_back(ele); 
+
+    } 
+
+    set<string> staticWidgets = {"Logo","WarningLights"}; 
+
+     
+
+    cout<<"Printing all dynamic widgets "<<endl; 
+
+    for(auto i = dynamicWidgets.begin(); i != dynamicWidgets.end(); i++) 
+
+    { 
+
+        cout<<*i<<endl; 
+
+    } 
+
+     
+
+    cout<<"...............Checking widgets in set..................."<<endl; 
+
+     
+
+    string target; 
+
+    cout<<"Enter target Value: "; 
+
+    cin>>target; 
+
+     
+
+    auto it = find(staticWidgets.begin(), staticWidgets.end(),target); 
+
+    if(it != staticWidgets.end()) 
+
+    { 
+
+        cout<<"The "<<target<<" is found in staticWidgets"<<endl; 
+
+    } 
+
+    else 
+
+    { 
+
+        cout<<"The "<<target<<" is not found in staticWidgets"<<endl; 
+
+    } 
+
+    cout<<"....................................Combining the both widgets..............................."<<endl; 
+
+    vector<string> bothContainerCombined(dynamicWidgets.size() + staticWidgets.size()); 
+
+    copy(dynamicWidgets.begin(), dynamicWidgets.end(), bothContainerCombined.begin()); 
+
+    copy(staticWidgets.begin(), staticWidgets.end(), bothContainerCombined.begin()+dynamicWidgets.size()); 
+
+     
+
+    for(auto it : bothContainerCombined) 
+
+    { 
+
+        cout<<it<<endl; 
+
+    } 
+
+    cout<<".......................Searching in combined Widget...................."<<endl; 
+
+    string combinedTarget; 
+
+    cout<<"Enter target Value: "; 
+
+    cin>>combinedTarget; 
+
+    auto combinedSearch = find(bothContainerCombined.begin(), bothContainerCombined.end(), combinedTarget); 
+
+     
+
+    if(combinedSearch != bothContainerCombined.end()) 
+
+    { 
+
+        cout<<"The "<<combinedTarget<<" is found"<<endl;     
+
+    } 
+
+    else 
+
+    { 
+
+        cout<<"The "<<combinedTarget<<" is not found."<<endl; 
+
+    } 
+
+    return 0; 
+
+} 

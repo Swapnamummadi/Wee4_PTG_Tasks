@@ -1,0 +1,341 @@
+//Task 4: Sorting, Searching, and Merging 
+
+//Goal: Practice sorting, searching, and merging in an HMI-related context. 
+
+//Scenario: 
+
+//A new feature requires merging two lists of controls into a single sorted list for efficient access. 
+
+//Steps: 
+
+//Sorting: 
+
+//Sort the controls by their ID using std::sort. 
+
+//Use std::stable_sort to maintain relative order for controls with equal IDs. 
+
+//Binary Search: 
+
+//Search for a control by ID using std::lower_bound and std::upper_bound. 
+
+//Merging: 
+
+//Merge two sorted lists of controls using std::merge. 
+
+//Use std::inplace_merge to combine controls from two different segments in the same list. 
+
+//Set Operations: 
+
+//Use std::set_union and std::set_intersection to identify common and unique controls. 
+
+//Sol: 
+
+#include<iostream> 
+
+#include<algorithm> 
+
+#include <string> 
+
+#include<vector> 
+
+#include<set> 
+
+  
+
+using namespace std; 
+
+  
+
+struct Control 
+
+{ 
+
+int id; 
+
+string type; 
+
+string state; 
+
+  
+
+bool operator < (const Control& ctrl) const 
+
+{ 
+
+return id < ctrl.id; 
+
+} 
+
+  
+
+// bool operator ==(const Control& ctrl) 
+
+// { 
+
+//     return id == ctrl.id; 
+
+// } 
+
+}; 
+
+  
+
+void printData(vector<Control> control) 
+
+{ 
+
+for(auto ctrl : control) 
+
+{ 
+
+cout<<"Id: "<<ctrl.id<<", Type: "<<ctrl.type<<", State: "<<ctrl.state<<endl; 
+
+} 
+
+} 
+
+  
+
+  
+
+int main() 
+
+{ 
+
+vector<Control> ctrl1 = { {1, "Slider","Visible"}, 
+
+{6, "Button", "invisble"}, 
+
+{3, "Slider", "disabled"}, 
+
+{8, "Button", "enabled"}, 
+
+{5, "Button", "visible"}, 
+
+{1, "Button", "enabled"} 
+
+}; 
+
+vector<Control> ctrl2 = { 
+
+{4, "Button", "invisible"}, 
+
+{2, "Slider", "disabled"}, 
+
+{9, "Slider", "enabled"}, 
+
+{8, "Button", "invisible"}, 
+
+{7, "Slider", "enabled"}, 
+
+{7, "Button", "disabled"}, 
+
+{9, "Button", "disabled"} 
+
+}; 
+
+  
+
+cout << "....................................Sorting the controls by their ID........................................" << endl; 
+
+  
+
+sort(ctrl1.begin(), ctrl1.end()); 
+
+sort(ctrl2.begin(), ctrl2.end()); 
+
+cout << "Sorted ctrl1 control is: " << endl; 
+
+  
+
+printData(ctrl1); 
+
+cout << "Sorted ctrl2 control is: " << endl; 
+
+printData(ctrl2); 
+
+  
+
+// for (const auto& ctrl : ctrl1) 
+
+// { 
+
+//     cout << ctrl.id << ctrl.type << ctrl.state << endl; 
+
+// } 
+
+  
+
+cout<<"..................................Stable sort by their id......................................................"<<endl; 
+
+stable_sort(ctrl1.begin(), ctrl1.end()); 
+
+    stable_sort(ctrl2.begin(), ctrl2.end()); 
+
+cout<<"After Stable sort ctrl1"<<endl; 
+
+  
+
+  
+
+printData(ctrl1); 
+
+cout<<"After Stable sort ctrl1"<<endl; 
+
+  
+
+printData((ctrl2)); 
+
+  
+
+int target; 
+
+cout<<"Enter target value: "; 
+
+cin>>target; 
+
+  
+
+cout<<"...............................................lower_bound......................................................."<<endl; 
+
+auto it = lower_bound(ctrl1.begin(), ctrl1.end(), Control{target}); 
+
+  
+
+if(it != ctrl1.end()) 
+
+{ 
+
+cout<<"Id: "<<it->id<<", Type: "<<it->type<<"State: "<<it->state<<endl; 
+
+} 
+
+else 
+
+{ 
+
+cout<<"Target is Not Found in lower_bound!!!"<<endl; 
+
+} 
+
+  
+
+cout<<"............................................upper_bound..........................................................."<<endl; 
+
+auto it1 = upper_bound(ctrl1.begin(), ctrl1.end(), Control{target}); 
+
+  
+
+if(it1 != ctrl1.end()) 
+
+{ 
+
+cout<<"Id: "<<it1->id<<", Type: "<<it1->type<<"State: "<<it1->state<<endl; 
+
+} 
+
+else 
+
+{ 
+
+cout<<"Target is Not Found in upper_bound!!!"<<endl; 
+
+} 
+
+  
+
+cout<<".............................................merging two controls..............................................."<<endl; 
+
+  
+
+vector<Control> ctrl3(ctrl1.size()+ctrl2.size()); 
+
+  
+
+merge(ctrl1.begin(), ctrl1.end(), ctrl2.begin(), ctrl2.end(), ctrl3.begin()); 
+
+  
+
+cout<<"After Merging ctrl1 and ctrl2 "<<endl; 
+
+  
+
+// for(auto it : ctrl3) 
+
+// { 
+
+//     cout<<"Id: "<<it.id<<", Type: "<<it.type<<", State: "<<it.state<<endl; 
+
+// } 
+
+  
+
+printData(ctrl3); 
+
+  
+
+cout<<".............................................inplace_merge............................................"<<endl; 
+
+int subRange = ctrl1.size() / 2; 
+
+cout<<subRange<<endl; 
+
+  
+
+inplace_merge(ctrl1.begin(), ctrl1.begin()+subRange, ctrl1.end()); 
+
+  
+
+printData(ctrl1); 
+
+  
+
+cout<<"............................................Set Operations............................................"<<endl; 
+
+  
+
+    cout<<"...................set_union..........................."<<endl; 
+
+vector<Control> res(ctrl1.size()+ctrl2.size()); 
+
+auto itt = set_union(ctrl1.begin(), ctrl1.end(),ctrl2.begin(),ctrl2.end(),res.begin()); 
+
+res.resize(itt-res.begin()); 
+
+for(auto it : res) 
+
+{ 
+
+    cout<<"Id: "<<it.id<<", Type: "<<it.type<<", State: "<<it.state<<endl; 
+
+} 
+
+ 
+
+cout<<".....................set_intersection..................."<<endl; 
+
+ 
+
+vector<Control> result(ctrl1.size()+ctrl2.size()); 
+
+auto ite = set_intersection(ctrl1.begin(),ctrl1.end(),ctrl2.begin(),ctrl2.end(),result.begin()); 
+
+ 
+
+result.resize(ite-result.begin()); 
+
+ 
+
+for(auto it : result) 
+
+{ 
+
+    cout<<"Id: "<<it.id<<", Type: "<<it.type<<", State: "<<it.state<<endl; 
+
+} 
+
+ 
+
+} 
+
+ 
